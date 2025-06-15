@@ -8,7 +8,7 @@ import {
 } from "../utils/localStorage";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../actions/Action";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [form] = Form.useForm();
