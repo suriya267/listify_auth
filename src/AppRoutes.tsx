@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import Layout from "./components/Layout";
 import { lazy, Suspense } from "react";
 import PrivateRoute from "./components/PrivateRoute";
+import Loader from "./components/Loader";
 
 const Login = lazy(() => import("./pages/Login"));
 const View = lazy(() => import("./pages/View"));
@@ -11,7 +12,7 @@ export default function AppRoutes() {
     {
       path: "/",
       element: (
-        <Suspense fallback={<div>Loading Login...</div>}>
+        <Suspense fallback={<Loader/>}>
           <Login />
         </Suspense>
       ),
@@ -19,7 +20,7 @@ export default function AppRoutes() {
     {
       path: "/login",
       element: (
-        <Suspense fallback={<div>Loading Login...</div>}>
+        <Suspense fallback={<Loader/>}>
           <Login />
         </Suspense>
       ),
@@ -35,7 +36,7 @@ export default function AppRoutes() {
         {
           path: "view",
           element: (
-            <Suspense fallback={<div>Loading View...</div>}>
+            <Suspense fallback={<Loader/>}>
               <View />
             </Suspense>
           ),
