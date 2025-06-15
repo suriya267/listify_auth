@@ -36,7 +36,7 @@ export default function AppRoutes() {
         {
           path: "view",
           element: (
-            <Suspense fallback={<Loader/>}>
+            <Suspense fallback={<></>}>
               <View />
             </Suspense>
           ),
