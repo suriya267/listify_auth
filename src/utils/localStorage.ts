@@ -7,7 +7,7 @@ const getAuthToken = () => {
 };
 
 const clearAuthToken = () => {
-  localStorage.clear();
+  localStorage.removeItem("token");
 };
 
 const setRememberEmail = (email: string) => {

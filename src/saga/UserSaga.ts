@@ -45,6 +45,7 @@ function* logoutSaga(): SagaIterator {
     if (result.status === 1) {
       yield put({
         type: ApiConstants.API_LOGOUT_SUCCESS,
+        result: result.result.data,
         status: result.status,
       });
     } else {
@@ -72,4 +73,63 @@ function* getAllUserSaga(action: any): SagaIterator {
   }
 }
 
-export { loginSaga, logoutSaga, getAllUserSaga };
+function* deleteUserSaga(action: any): SagaIterator {
+  try {
+    const result = yield call(userAxiosApi.deleteUser, action.payload);
+
+    if (result.status === 1) {
+      yield put({
+        type: ApiConstants.API_DELETE_USER_SUCCESS,
+        result: result.result.data,
+        status: result.status,
+      });
+    } else {
+      yield call(failSaga, result);
+    }
+  } catch (error) {
+    yield call(errorSaga, error);
+  }
+}
+
+function* createUserSaga(action: any): SagaIterator {
+  try {
+    const result = yield call(userAxiosApi.createUser, action.payload);
+    if (result.status === 1) {
+      yield put({
+        type: ApiConstants.API_CREATE_USER_SUCCESS,
+        result: result.result.data,
+        status: result.status,
+      });
+    } else {
+      yield call(failSaga, result);
+    }
+  } catch (error) {
+    yield call(errorSaga, error);
+  }
+}
+
+function* editUserSaga(action: any): SagaIterator {
+  try {
+    const result = yield call(userAxiosApi.editUsere, action.payload);
+    if (result.status === 1) {
+      yield put({
+        type: ApiConstants.API_EDIT_USER_SUCCESS,
+        result: result.result.data,
+        status: result.status,
+      });
+    } else {
+      yield call(failSaga, result);
+    }
+  } catch (error) {
+    yield call(errorSaga, error);
+  }
+}
+
+export {
+  loginSaga,
+  logoutSaga,
+  getAllUserSaga,
+  deleteUserSaga,
+  createUserSaga,
+  editUserSaga,
+};

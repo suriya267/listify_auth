@@ -1,4 +1,5 @@
 import http from "../api/http";
+import { clearAuthToken } from "../utils/localStorage";
 
 export const userAxiosApi = {
   login(payload: any) {
@@ -9,9 +10,22 @@ export const userAxiosApi = {
     const route = "/api/logout";
     return Method.dataPostWithoutBody(route);
   },
-  getAllUser(payload: any) {
+  getAllUser(payload: number) {
     const route = `/api/users?page=${payload}`;
     return Method.dataGet(route);
+  },
+  deleteUser(payload: number) {
+    const route = `/api/users/${payload}`;
+    return Method.dataDelete(route);
+  },
+  createUser(payload: any) {
+    const route = `/api/users`;
+    return Method.dataPost(route, payload);
+  },
+  editUsere(payload: any) {
+    const { id, ...rest } = payload;
+    const route = `/api/users/${id}`;
+    return Method.dataPatch(route, rest);
   },
 };
 
@@ -48,15 +62,13 @@ const Method = {
         })
         .catch((err) => {
           if (err.response) {
-            console.log("err.response.status", err.response.status);
-
             if (
               err.response.status !== null &&
               err.response.status !== undefined
             ) {
               if (err.response.status == 401) {
-                //   logout();
-                //   message.error(ValidationConstants.messageStatus401);
+                clearAuthToken();
+                window.location.href = "/";
               } else {
                 return reject({
                   status: 5,
@@ -113,8 +125,8 @@ const Method = {
               err.response.status !== undefined
             ) {
               if (err.response.status == 401) {
-                //   logout();
-                //   message.error(ValidationConstants.messageStatus401);
+                clearAuthToken();
+                window.location.href = "/";
               } else {
                 return reject({
                   status: 5,
@@ -132,11 +144,10 @@ const Method = {
     });
   },
 
-  async dataPut(newurl: any, body: any) {
-    const url = newurl;
+  async dataGet(route: any) {
     return await new Promise((resolve, reject) => {
       http
-        .put(url, body)
+        .get(route)
 
         .then((result) => {
           if (result.status === 200) {
@@ -170,8 +181,8 @@ const Method = {
               err.response.status !== undefined
             ) {
               if (err.response.status == 401) {
-                //   logout();
-                // message.error(ValidationConstants.messageStatus401)
+                clearAuthToken();
+                window.location.href = "/";
               } else {
                 return reject({
                   status: 5,
@@ -189,11 +200,10 @@ const Method = {
     });
   },
 
-  async dataGet(newurl: any) {
-    const url = newurl;
+  async dataPatch(route: any, body: any) {
     return await new Promise((resolve, reject) => {
       http
-        .get(url)
+        .patch(route, body)
 
         .then((result) => {
           if (result.status === 200) {
@@ -227,8 +237,8 @@ const Method = {
               err.response.status !== undefined
             ) {
               if (err.response.status == 401) {
-                //   logout();
-                //   message.error(ValidationConstants.messageStatus401);
+                clearAuthToken();
+                window.location.href = "/";
               } else {
                 return reject({
                   status: 5,
@@ -246,12 +256,10 @@ const Method = {
     });
   },
 
-  async dataPatch(newurl: any, body: any) {
-    const url = newurl;
+  async dataDelete(route: any) {
     return await new Promise((resolve, reject) => {
       http
-        .patch(url, body)
-
+        .delete(route)
         .then((result) => {
           if (result.status === 200) {
             return resolve({
@@ -264,7 +272,7 @@ const Method = {
               result: result,
             });
           } else {
-            if (result) {
+            if (result.data) {
               return reject({
                 status: 3,
                 error: result.data.message,
@@ -284,66 +292,8 @@ const Method = {
               err.response.status !== undefined
             ) {
               if (err.response.status == 401) {
-                //   logout();
-                //   message.error(ValidationConstants.messageStatus401);
-              } else {
-                return reject({
-                  status: 5,
-                  error: err,
-                });
-              }
-            }
-          } else {
-            return reject({
-              status: 5,
-              error: err,
-            });
-          }
-        });
-    });
-  },
-
-  async dataDelete(newurl: any, body: any) {
-    const url = newurl;
-    return await new Promise((resolve, reject) => {
-      http
-        .delete(url, {
-          data: body,
-        })
-        .then((result) => {
-          if (result.status === 200) {
-            return resolve({
-              status: 1,
-              result: result,
-            });
-          } else if (result.status == 212) {
-            return resolve({
-              status: 4,
-              result: result,
-            });
-          } else {
-            if (result) {
-              return reject({
-                status: 3,
-                error: result.data.message,
-              });
-            } else {
-              return reject({
-                status: 4,
-                error: "Something went wrong.",
-              });
-            }
-          }
-        })
-        .catch((err) => {
-          if (err.response) {
-            if (
-              err.response.status !== null &&
-              err.response.status !== undefined
-            ) {
-              if (err.response.status == 401) {
-                //   logout();
-                //   message.error(ValidationConstants.messageStatus401);
+                clearAuthToken();
+                window.location.href = "/";
               } else {
                 return reject({
                   status: 5,

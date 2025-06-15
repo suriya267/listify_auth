@@ -1,11 +1,12 @@
-import { TableOutlined, UnorderedListOutlined } from "@ant-design/icons";
-import { Button, Pagination, Radio } from "antd";
-import Search from "antd/es/input/Search";
+import { Pagination } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUserAction } from "../actions/Action";
 import CustomeTable from "../components/CustomeTable";
 import GridView from "../components/GridView";
+import Tabs from "../components/Tabs";
+import SearchView from "../components/SearchView";
+import AddEditModal from "../components/AddEditModal";
 
 const View = () => {
   const dispatch = useDispatch();
@@ -15,73 +16,78 @@ const View = () => {
   const getAllUserLoad = useSelector((state: any) => state.getAllUserLoad);
   const [userData, setUserData] = useState<any>();
   const [mode, setMode] = useState<string>("list");
+  const [searchName, setSearchName] = useState<string>("");
+  const [filteredUsers, setFilteredUsers] = useState<any>();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [prePopulate, setPrePopulate] = useState<any>(null);
+  const [handlePagination, setHandlePagination] = useState<boolean>(false);
 
+  //call get users api
   useEffect(() => {
-    dispatch(getAllUserAction(currentPage));
-    setGetAllUserLoading(true);
-  }, [currentPage]);
+    if (!searchName) {
+      dispatch(getAllUserAction(currentPage));
+      setGetAllUserLoading(true);
+      setHandlePagination(false);
+    }
+  }, [currentPage, searchName]);
 
+  //set users api result to state
   useEffect(() => {
     if (getAllUserLoading === true && getAllUserLoad === false) {
       setUserData(getAllUser);
+      setFilteredUsers(getAllUser?.data);
     }
   }, [getAllUserLoading, getAllUserLoad]);
 
-  console.log("useData", userData);
+  //filter functionality
+  const filterUserFuntion = () => {
+    try {
+      const term = searchName.toLowerCase();
+      const filtered = userData?.data?.filter(
+        (user: any) =>
+          user.first_name.toLowerCase().includes(term) ||
+          user.last_name.toLowerCase().includes(term)
+      );
+      setFilteredUsers(filtered);
+      setCurrentPage(1);
+      setHandlePagination(true);
+    } catch (error) {
+      console.log("Error in filter names::", error);
+    }
+  };
+
+  const startIndex = (currentPage - 1) * 6;
+  const currentUsers = handlePagination
+    ? filteredUsers?.slice(startIndex, startIndex + 6)
+    : filteredUsers;
+
 
   return (
     <div>
       <div className="shadow bg-white" style={{ marginTop: "8rem" }}>
-        <div className="d-flex justify-content-between p-4">
-          <div className="fs-5" style={{ fontWeight: 600 }}>
-            Users
-          </div>
-          <div className="d-flex align-items-center">
-            <div className="me-3">
-              <Search
-                style={{ borderRadius: 2 }}
-                placeholder="input search text"
-                //   onSearch={onSearch}
-              />
-            </div>
-            <div>
-              <Button
-                type="primary"
-                style={{ borderRadius: 2 }}
-                htmlType="submit"
-              >
-                Create User
-              </Button>
-            </div>
-          </div>
-        </div>
+        <SearchView
+          searchName={searchName}
+          setSearchName={setSearchName}
+          filterUserFuntion={filterUserFuntion}
+          setIsModalOpen={setIsModalOpen}
+          setPrePopulate={setPrePopulate}
+        />
         <div className="mt-4 px-4">
-          <Radio.Group
-            onChange={(e) => setMode(e.target.value)}
-            value={mode}
-            style={{ marginBottom: 8 }}
-          >
-            <Radio.Button
-              style={{ borderBottomLeftRadius: 3, borderTopLeftRadius: 3 }}
-              value="list"
-            >
-              <TableOutlined />
-              <span className="ms-1">Table</span>
-            </Radio.Button>
-            <Radio.Button
-              style={{ borderBottomRightRadius: 3, borderTopRightRadius: 3 }}
-              value="grid"
-            >
-              <UnorderedListOutlined />
-              <span className="ms-1"> Card</span>
-            </Radio.Button>
-          </Radio.Group>
+          <Tabs mode={mode} setMode={setMode} />
         </div>
         <div>
           {mode === "list" ? (
-            <CustomeTable data={userData?.data || []} />
+            <CustomeTable
+              data={currentUsers || []}
+              setIsModalOpen={setIsModalOpen}
+              setPrePopulate={setPrePopulate}
+            />
           ) : (
-            <GridView data={userData?.data || []} />
+            <GridView
+              data={currentUsers || []}
+              setIsModalOpen={setIsModalOpen}
+              setPrePopulate={setPrePopulate}
+            />
           )}
         </div>
       </div>
@@ -89,9 +95,15 @@ const View = () => {
         <Pagination
           onChange={(e) => setCurrentPage(e)}
           current={currentPage}
-          total={userData?.total}
+          total={searchName ? currentUsers?.length : userData?.total}
         />
       </div>
+      <AddEditModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        prePopulate={prePopulate}
+        setPrePopulate={setPrePopulate}
+      />
     </div>
   );
 };

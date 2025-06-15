@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import { logoutAction } from "../actions/Action";
 import { useEffect, useState } from "react";
+import { clearAuthToken } from "../utils/localStorage";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ const Layout = () => {
 
   useEffect(() => {
     if (logoutLoad === false && logoutLoading === true) {
+      clearAuthToken();
       setLogoutLoading(false);
       navigate("/");
     }

@@ -1,14 +1,33 @@
 import { Avatar, Col, Row } from "antd";
 import React, { memo, useState } from "react";
-import image from "../assets/userCard.png";
+import { useDispatch } from "react-redux";
+import { deleteUserAction } from "../actions/Action";
 
-const GridView = memo((props: any) => {
+interface gridView {
+  data: any;
+  setIsModalOpen: any;
+  setPrePopulate: any;
+}
+const GridView = memo((props: gridView) => {
+  const { data, setIsModalOpen, setPrePopulate } = props;
+  const dispatch = useDispatch();
   const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  const handleEdit = (value: any) => {
+    setIsModalOpen(true);
+    setPrePopulate(value);
+  };
+
+  //call delete api
+  //this api status 204 
+  const handleDelete = (id: number) => {
+    dispatch(deleteUserAction(id));
+  };
 
   return (
     <div style={{ backgroundColor: "#dedede", paddingTop: 15 }}>
       <Row gutter={[35, 35]}>
-        {props.data.map((item: any, index: any) => {
+        {data.map((item: any, index: any) => {
           return (
             <Col
               span={8}
@@ -43,6 +62,7 @@ const GridView = memo((props: any) => {
                   >
                     <div className="d-flex align-items-center">
                       <div
+                        onClick={() => handleEdit(item)}
                         className="rounded-5 d-flex justify-content-center align-items-center"
                         style={{
                           backgroundColor: "#8585e6",
@@ -54,6 +74,7 @@ const GridView = memo((props: any) => {
                         <i className="bi bi-pencil-fill text-white fs-4"></i>
                       </div>
                       <div
+                        onClick={() => handleDelete(item?.id)}
                         className="rounded-5 ms-3 d-flex justify-content-center align-items-center"
                         style={{
                           backgroundColor: "#fc0000",

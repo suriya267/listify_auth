@@ -6,6 +6,9 @@ const initialState = {
   logoutLoad: false,
   getAllUserLoad: false,
   getAllUser: null,
+  deleteUserLoad: false,
+  createUserLoad: false,
+  editUserLoad: false,
 };
 
 export default function UserReducerState(
@@ -49,6 +52,42 @@ export default function UserReducerState(
         ...state,
         getAllUserLoad: false,
         getAllUser: action?.result,
+      };
+
+    case ApiConstants.API_DELETE_USER_LOAD:
+      return {
+        ...state,
+        deleteUserLoad: true,
+      };
+
+    case ApiConstants.API_DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        deleteUserLoad: false,
+      };
+
+    case ApiConstants.API_CREATE_USER_LOAD:
+      return {
+        ...state,
+        createUserLoad: true,
+      };
+
+    case ApiConstants.API_CREATE_USER_SUCCESS:
+      return {
+        ...state,
+        createUserLoad: false,
+      };
+
+    case ApiConstants.API_EDIT_USER_LOAD:
+      return {
+        ...state,
+        editUserLoad: true,
+      };
+
+    case ApiConstants.API_EDIT_USER_SUCCESS:
+      return {
+        ...state,
+        editUserLoad: false,
       };
 
     default:
