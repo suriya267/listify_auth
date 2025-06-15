@@ -1,7 +1,7 @@
 import { PoweroffOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { logoutAction } from "../actions/Action";
 import { useEffect, useState } from "react";
 import { clearAuthToken } from "../utils/localStorage";
