@@ -12,8 +12,8 @@ const View = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [getAllUserLoading, setGetAllUserLoading] = useState<boolean>(false);
-  const getAllUser = useSelector((state: any) => state.getAllUser);
-  const getAllUserLoad = useSelector((state: any) => state.getAllUserLoad);
+  const getAllUser = useSelector((state: any) => state?.getAllUser);
+  const getAllUserLoad = useSelector((state: any) => state?.getAllUserLoad);
   const [userData, setUserData] = useState<any>();
   const [mode, setMode] = useState<string>("list");
   const [searchName, setSearchName] = useState<string>("");
@@ -45,8 +45,8 @@ const View = () => {
       const term = searchName.toLowerCase();
       const filtered = userData?.data?.filter(
         (user: any) =>
-          user.first_name.toLowerCase().includes(term) ||
-          user.last_name.toLowerCase().includes(term)
+          user?.first_name.toLowerCase().includes(term) ||
+          user?.last_name.toLowerCase().includes(term)
       );
       setFilteredUsers(filtered);
       setCurrentPage(1);
