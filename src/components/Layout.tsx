@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from "react-router";
 import { logoutAction } from "../actions/Action";
 import { useEffect, useState } from "react";
 import { clearAuthToken } from "../utils/localStorage";
+import View from "../pages/View";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const Layout = () => {
         </div>
       </div>
       <div className="container mt-6">
-        <Outlet />
+        <View />
       </div>
     </div>
   );

@@ -1,18 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import Layout from "./components/Layout";
 import { lazy, Suspense } from "react";
 import PrivateRoute from "./components/PrivateRoute";
 import Loader from "./components/Loader";
 
 const Login = lazy(() => import("./pages/Login"));
-const View = lazy(() => import("./pages/View"));
+const View = lazy(() => import("./components/Layout"));
 
 export default function AppRoutes() {
   let router = createBrowserRouter([
     {
       path: "/",
       element: (
-        <Suspense fallback={<Loader/>}>
+        <Suspense fallback={<Loader />}>
           <Login />
         </Suspense>
       ),
@@ -20,7 +19,7 @@ export default function AppRoutes() {
     {
       path: "/login",
       element: (
-        <Suspense fallback={<Loader/>}>
+        <Suspense fallback={<Loader />}>
           <Login />
         </Suspense>
       ),
@@ -29,19 +28,11 @@ export default function AppRoutes() {
       path: "/user",
       element: (
         <PrivateRoute>
-          <Layout />
+          <Suspense fallback={<Loader />}>
+            <View />
+          </Suspense>
         </PrivateRoute>
       ),
-      children: [
-        {
-          path: "view",
-          element: (
-            <Suspense fallback={<></>}>
-              <View />
-            </Suspense>
-          ),
-        },
-      ],
     },
   ]);
   return <RouterProvider router={router} />;
