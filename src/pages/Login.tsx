@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Divider, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import {
   clearRememberEmail,
