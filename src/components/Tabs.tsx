@@ -1,6 +1,6 @@
 import { TableOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import { Radio } from "antd";
-import React, { memo } from "react";
+import { memo } from "react";
 
 interface tab {
   mode: string;

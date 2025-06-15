@@ -1,5 +1,5 @@
 import { Button, Form, Input, Modal } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUserAction, editUserAction } from "../actions/Action";
 
@@ -37,7 +37,7 @@ function AddEditModal(props: addEditModal) {
   }, [addLoad, createUserLoad, editUserLoad, editLoad]);
 
   const addEdit = (value: any) => {
-    if (prePopulate) {        
+    if (prePopulate) {
       const { id } = prePopulate;
       let payload = {
         ...value,

@@ -1,5 +1,5 @@
 import { Avatar, Col, Row } from "antd";
-import React, { memo, useState } from "react";
+import { memo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUserAction } from "../actions/Action";
 
@@ -19,7 +19,7 @@ const GridView = memo((props: gridView) => {
   };
 
   //call delete api
-  //this api status 204 
+  //this api status 204
   const handleDelete = (id: number) => {
     dispatch(deleteUserAction(id));
   };

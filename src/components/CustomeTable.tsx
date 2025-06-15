@@ -1,5 +1,5 @@
 import { Avatar, Button, Table, type TableProps } from "antd";
-import React, { memo } from "react";
+import { memo } from "react";
 import { useDispatch } from "react-redux";
 import { deleteUserAction } from "../actions/Action";
 interface customeTable {

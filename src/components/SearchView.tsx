@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import Search from "antd/es/input/Search";
-import React, { memo } from "react";
+import { memo } from "react";
 
 interface searchView {
   searchName: string;
